@@ -1,17 +1,11 @@
-//app.directive('name', function(){
-export default function(moviesService){
+export default function(){
   return {
-    link: function($scope, $element, $attrs){
-      moviesService
-        .getData()
-          .then(function(response){
-            $scope.movies = response.data
-          })
-    },
+    replace: true,
+    restrict: 'E',
     template: `
-      <ul>
-        <li ng-repeat="movie in movies">{{movie.name}}</li>
-      </ul>
-    `
+        <div class="movie-list">
+          <movie ng-repeat='movie in movies' movie-obj='movie' name='{{movie.name}}'></movie>
+        </div>
+      `
   }
 }

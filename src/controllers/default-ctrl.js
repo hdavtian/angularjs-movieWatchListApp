@@ -1,3 +1,7 @@
-export default function($scope){
-  $scope.msg = "Hello World Again!";
+export default function($scope, moviesService){
+  moviesService
+    .getData()
+      .then(function(response){
+        $scope.movies = response.data
+      });
 }

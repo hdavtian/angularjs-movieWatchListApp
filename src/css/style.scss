@@ -1,0 +1,35 @@
+html, body {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  padding: 25px;
+  border:25px solid #666;
+}
+
+.movie-list {
+  padding: 0;
+
+  .movie {
+
+    font-family: cursive, monospace, sans-serif;
+    list-style-type: none;
+    padding: 8px 0;
+    border-bottom: 1px dotted #ccc;
+
+    .close-btn {
+      font-family: arial, helvetica, sans-serif;
+      color: red;
+      font-weight: bold;
+      cursor: pointer;
+      width: 24px;
+      height: 25px;
+      display: inline-block;
+      border-radius: 50%;
+      border: 1px solid red;
+    }
+
+  }
+
+}//movies-list
