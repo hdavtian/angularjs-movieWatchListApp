@@ -8,15 +8,17 @@ export default function(){
     template: `
       <div class="row movie">
         <div class="col-xs-8">
-          {{movieObj.name}}
+          <span class="movie-name">{{movieObj.name}}</span>
         </div>
         <div class="col-xs-4">
-          <span class="close-btn" ng-click=remove()>&times;</span>
+          <span class='close-btn glyphicon glyphicon-remove' ng-click='remove()'></span>
+          <span class='close-btn glyphicon glyphicon-eye-close' ng-click='crossOut()'></span>
         </div>
       </div>
     `,
     link: function($scope, $element, $attrs){
       let movies = $scope.$parent.movies;
+
       $scope.remove = function(){
         for(var i=0, l=movies.length; i<l; i++){
           if (movies[i].name === $attrs.name) {
@@ -24,7 +26,12 @@ export default function(){
             return;
           }
         }
-      }
+      };
+
+      $scope.crossOut = function(){
+        $element.toggleClass('crossed-out');
+      };
+
     }
   }
 }

@@ -1,13 +1,19 @@
-export default function(){
+export default function(moviesService, $rootScope){
   return {
     replace: true,
+    transclude: true,
     template: `
-      <div>
+      <div class="movie-adder-container">
         <form>
-          <label>Movie Name: </label>
-          <input type="text" class="textbox" />
-          <input type="submit" class="btn btn-primary" value="add" />
+          <input type="text" class="textbox-movie" placeholder="Type a movie name" />
+          <input type="submit" class="btn btn-primary" value="Add movie" />
         </form>
+
+        <div class="load-json" ng-click='loadMovies()'>
+          <span class='glyphicon glyphicon-import'></span>
+          <span>Re-load movie list</span>
+        </div>
+
       </div>
     `,
     link: function($scope, $element, $attrs){
@@ -16,7 +22,7 @@ export default function(){
       let submitBtn = $element.find('input.btn');
 
       form.on('submit', function(){
-        let newMovieName = $element.find('input.textbox').val();
+        let newMovieName = $element.find('input.textbox-movie').val();
 
         // check for blank entries
         if(newMovieName.trim() === '') {
@@ -30,6 +36,11 @@ export default function(){
           form[0].reset();
         });
       })
+
+      $scope.loadMovies = function(){
+        // moviesService.getData();
+        $rootScope.loadMovies();
+      }
     }
   }
 }

@@ -6,12 +6,34 @@
   </head>
   <body>
 
-    <h1>Add movie to watch list!</h1>
-
     <div ng-app="app">
       <div ng-controller="ctrl">
-        <movie-adder></movie-adder>
-        <movies></movies>
+
+        <div class="row">
+          <div class="col-sm-10 col-sm-offset-1 main-container">
+            <div class="col-sm-6 left-col">
+              <div class="divider">
+                <div class="glyphicon glyphicon-film"></div>
+              </div>
+              <h1>Movie Watchlist App</h1>
+              <h4>AngularJS, Webpack, Bootstrap, Sass, Babel</h4>
+              <p>This is a my variation of the popular `todo app` written using AngularJs, Webpack, Bootstrap, Sass and Babel. Instead of adding to a list of todo's, you are adding movies to a watch list.</p>
+              <p><a href="#">Tutorial</a> | <a href="#">Github</a> | By: <a href="#">Harma Davtian</a></p>
+            </div>
+            <div class="col-sm-6 right-col">
+              <div class="content">
+
+                <movie-adder></movie-adder>
+
+
+
+                <movies></movies>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
 
