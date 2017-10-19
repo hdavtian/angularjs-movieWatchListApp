@@ -1,5 +1,4 @@
 const path = require('path');
-const json = require('json-loader');
 const webpack = require('webpack');
 
 module.exports = {
@@ -13,24 +12,18 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: '/node-modules',
-        loader: 'babel-loader'
-      },
-      {
-        test: /\.html$/,
-        loader: "html"
+        loader: 'babel-loader',
+        query: {
+          presets: ["es2015", "react", "stage-2"]
+        }
       },
       {
         test: /\.css$/,
-        // loader: 'style-loader!css-loader'
         loaders: ['style-loader', 'css-loader']
       },
       {
         test: /\.scss$/,
         loaders: ['style-loader', 'css-loader', 'sass-loader']
-      },
-      {
-        test: /\.json$/,
-        loader: 'json-loader'
       },
       {
         test: /\.png$/,
@@ -62,11 +55,7 @@ module.exports = {
     new webpack.ProvidePlugin({
         $: 'jquery',
         jQuery: 'jquery',
-        'window.jQuery': 'jquery',
-        Popper: ['popper.js', 'default'],
-        // In case you imported plugins individually, you must also require them here:
-        Util: "exports-loader?Util!bootstrap/js/dist/util",
-        Dropdown: "exports-loader?Dropdown!bootstrap/js/dist/dropdown"
+        'window.jQuery': 'jquery'
       })
   ],
   devServer: {

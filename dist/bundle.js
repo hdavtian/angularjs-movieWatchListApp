@@ -28421,10 +28421,15 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-exports.default = function ($scope, moviesService) {
-  moviesService.getData().then(function (response) {
-    $scope.movies = response.data;
-  });
+exports.default = function ($scope, moviesService, $rootScope) {
+
+  $rootScope.loadMovies = function () {
+    moviesService.getData().then(function (response) {
+      $scope.movies = response.data;
+    });
+  };
+
+  $rootScope.loadMovies();
 };
 
 /***/ }),
@@ -28464,26 +28469,21 @@ exports.default = function () {
     },
     restrict: 'E',
     replace: true,
-    template: '\n      <div class="row movie">\n        <div class="col-xs-8">\n          {{movieObj.name}}\n        </div>\n        <div class="col-xs-4">\n          <span class="close-btn" ng-click=remove()>&times;</span>\n        </div>\n      </div>\n    ',
+    template: '\n      <div class="row movie">\n        <div class="col-xs-8">\n          <span class="movie-name">{{movieObj.name}}</span>\n        </div>\n        <div class="col-xs-4">\n          <span class=\'close-btn glyphicon glyphicon-remove\' ng-click=\'remove()\'></span>\n          <span class=\'close-btn glyphicon glyphicon-eye-close\' ng-click=\'crossOut()\'></span>\n        </div>\n      </div>\n    ',
     link: function link($scope, $element, $attrs) {
+      var movies = $scope.$parent.movies;
+
       $scope.remove = function () {
-        //console.log($attrs.name);
-        //console.log($scope.$parent.movies);
-        // $scope.$parent.movies = $scope.$parent.movies.filter(function(_movie){
-        //   //console.log(_movie.name);
-        //   console.log($attrs.name);
-        //   if (_movie.name !== $attrs.name) {
-        //     return _movie;
-        //   }
-        // })
-        // console.log(Array.isArray($scope.$parent.movies))
-        //$scope.$parent.movies = $scope.$parent.movies.pop();
-        var exists = function exists(movie) {
-          if ($scope.$parent.movies.indexOf(movie) >= -1) {
-            return movie;
+        for (var i = 0, l = movies.length; i < l; i++) {
+          if (movies[i].name === $attrs.name) {
+            movies.splice(i, 1);
+            return;
           }
-        };
-        $scope.$parent.movies = $scope.$parent.movies.filter(exists);
+        }
+      };
+
+      $scope.crossOut = function () {
+        $element.toggleClass('crossed-out');
       };
     }
   };
@@ -28520,17 +28520,18 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-exports.default = function () {
+exports.default = function (moviesService, $rootScope) {
   return {
     replace: true,
-    template: '\n      <div>\n        <form>\n          <label>Movie Name: </label>\n          <input type="text" class="textbox" />\n          <input type="submit" class="btn btn-primary" value="add" />\n        </form>\n      </div>\n    ',
+    transclude: true,
+    template: '\n      <div class="movie-adder-container">\n        <form>\n          <input type="text" class="textbox-movie" placeholder="Type a movie name" />\n          <input type="submit" class="btn btn-primary" value="Add movie" />\n        </form>\n\n        <div class="load-json" ng-click=\'loadMovies()\'>\n          <span class=\'glyphicon glyphicon-import\'></span>\n          <span>Re-load movie list</span>\n        </div>\n\n      </div>\n    ',
     link: function link($scope, $element, $attrs) {
 
       var form = $element.find('form');
       var submitBtn = $element.find('input.btn');
 
       form.on('submit', function () {
-        var newMovieName = $element.find('input.textbox').val();
+        var newMovieName = $element.find('input.textbox-movie').val();
 
         // check for blank entries
         if (newMovieName.trim() === '') {
@@ -28544,6 +28545,11 @@ exports.default = function () {
           form[0].reset();
         });
       });
+
+      $scope.loadMovies = function () {
+        // moviesService.getData();
+        $rootScope.loadMovies();
+      };
     }
   };
 };
@@ -28752,7 +28758,7 @@ exports = module.exports = __webpack_require__(1)(undefined);
 
 
 // module
-exports.push([module.i, "html, body {\n  width: 100%;\n  height: 100%; }\n\nbody {\n  padding: 25px;\n  border: 25px solid #666; }\n\n.movie-list {\n  padding: 0; }\n  .movie-list .movie {\n    font-family: cursive, monospace, sans-serif;\n    list-style-type: none;\n    padding: 8px 0;\n    border-bottom: 1px dotted #ccc; }\n    .movie-list .movie .close-btn {\n      font-family: arial, helvetica, sans-serif;\n      color: red;\n      font-weight: bold;\n      cursor: pointer;\n      width: 24px;\n      height: 25px;\n      display: inline-block;\n      border-radius: 50%;\n      border: 1px solid red; }\n", ""]);
+exports.push([module.i, "html, body {\n  font-family: helvetica, arial, sans-serif; }\n\n.movie-list {\n  padding: 0; }\n  .movie-list .movie {\n    font-family: courier, monospace, sans-serif;\n    font-size: 1.2em;\n    list-style-type: none;\n    padding: 8px 0;\n    border-bottom: 1px dotted #ccc; }\n    .movie-list .movie .close-btn {\n      cursor: pointer; }\n    .movie-list .movie.crossed-out .movie-name {\n      text-decoration: line-through;\n      color: #ccc; }\n\n.main-container {\n  display: table;\n  height: 90vh; }\n  .main-container .left-col, .main-container .right-col {\n    display: table-cell;\n    vertical-align: middle;\n    float: none; }\n  .main-container .left-col {\n    background-color: black;\n    color: white; }\n  .main-container .right-col .content {\n    margin: 0 auto;\n    width: 80%; }\n\n.movie-adder-container .textbox-movie {\n  width: 100%;\n  border: none;\n  border-bottom: 3px solid #FFCC00;\n  margin-bottom: 15px;\n  font-size: 3em;\n  padding-left: 5px;\n  padding: 10px; }\n  .movie-adder-container .textbox-movie::placeholder {\n    color: #ccc;\n    font-style: italic; }\n\n.movie-adder-container .btn-primary {\n  border-radius: 0;\n  border: 3px solid #FFCC00;\n  background-color: #991100;\n  color: white;\n  font-size: 2em; }\n\n.divider {\n  text-align: center;\n  font-size: 5em;\n  color: #FFCC00; }\n\n.load-json {\n  cursor: pointer; }\n", ""]);
 
 // exports
 
