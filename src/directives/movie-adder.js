@@ -1,7 +1,6 @@
-export default function(moviesService, $rootScope){
+export default function(){
   return {
     replace: true,
-    transclude: true,
     template: `
       <div class="movie-adder-container">
         <form>
@@ -19,9 +18,9 @@ export default function(moviesService, $rootScope){
     link: function($scope, $element, $attrs){
 
       let form = $element.find('form');
-      let submitBtn = $element.find('input.btn');
 
       form.on('submit', function(){
+
         let newMovieName = $element.find('input.textbox-movie').val();
 
         // check for blank entries
@@ -30,17 +29,13 @@ export default function(moviesService, $rootScope){
           return;
         };
 
-        // without scope.apply our view will not update
+        //without scope.apply our view will not update
         $scope.$apply(function(){
           $scope.movies.push({name: newMovieName});
           form[0].reset();
         });
       })
 
-      $scope.loadMovies = function(){
-        // moviesService.getData();
-        $rootScope.loadMovies();
-      }
     }
   }
 }

@@ -28418,18 +28418,12 @@ module.exports = function (module) {
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 
-exports.default = function ($scope, moviesService, $rootScope) {
-
-  $rootScope.loadMovies = function () {
-    moviesService.getData().then(function (response) {
-      $scope.movies = response.data;
-    });
-  };
-
-  $rootScope.loadMovies();
+exports.default = function ($scope) {
+    // keep your controllers thin
+    // bulk of code should be in services and directives
 };
 
 /***/ }),
@@ -28440,15 +28434,35 @@ exports.default = function ($scope, moviesService, $rootScope) {
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 
 exports.default = function () {
-  return {
-    replace: true,
-    restrict: 'E',
-    template: '\n        <div class="movie-list">\n          <movie ng-repeat=\'movie in movies\' movie-obj=\'movie\' name=\'{{movie.name}}\'></movie>\n        </div>\n      '
-  };
+    return {
+        replace: true,
+        restrict: 'E',
+        controller: function controller($scope, moviesService) {
+
+            $scope.loadMovies = function () {
+                console.log('------------loading!');
+                moviesService.getData().then(function (response) {
+                    $scope.movies = response.data;
+                });
+            };
+
+            $scope.remove = function (movieName) {
+                for (var i = 0, l = $scope.movies.length; i < l; i++) {
+                    if ($scope.movies[i].name === movieName) {
+                        $scope.movies.splice(i, 1);
+                        return;
+                    }
+                }
+            };
+
+            $scope.loadMovies();
+        },
+        template: '\n        <div class="movie-list">\n          <movie \n            ng-repeat=\'movie in movies\'\n            movie-obj=\'movie\'\n            name=\'{{movie.name}}\' />\n        </div>\n      '
+    };
 };
 
 /***/ }),
@@ -28469,19 +28483,8 @@ exports.default = function () {
     },
     restrict: 'E',
     replace: true,
-    template: '\n      <div class="row movie">\n        <div class="col-xs-8">\n          <span class="movie-name">{{movieObj.name}}</span>\n        </div>\n        <div class="col-xs-4">\n          <span class=\'close-btn glyphicon glyphicon-remove\' ng-click=\'remove()\'></span>\n          <span class=\'close-btn glyphicon glyphicon-eye-close\' ng-click=\'crossOut()\'></span>\n        </div>\n      </div>\n    ',
-    link: function link($scope, $element, $attrs) {
-      var movies = $scope.$parent.movies;
-
-      $scope.remove = function () {
-        for (var i = 0, l = movies.length; i < l; i++) {
-          if (movies[i].name === $attrs.name) {
-            movies.splice(i, 1);
-            return;
-          }
-        }
-      };
-
+    template: '\n      <div class="row movie">\n        <div class="col-xs-8">\n          <span class="movie-name">{{movieObj.name}}</span>\n        </div>\n        <div class="col-xs-4">\n          <span class=\'close-btn glyphicon glyphicon-remove\' ng-click=\'$parent.remove(movieObj.name)\'></span>\n          <span class=\'close-btn glyphicon glyphicon-eye-close\' ng-click=\'crossOut()\'></span>\n        </div>\n      </div>\n    ',
+    link: function link($scope, $element, $attrs, moviesCtrl) {
       $scope.crossOut = function () {
         $element.toggleClass('crossed-out');
       };
@@ -28520,7 +28523,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-exports.default = function (moviesService, $rootScope) {
+exports.default = function () {
   return {
     replace: true,
     transclude: true,
@@ -28545,11 +28548,6 @@ exports.default = function (moviesService, $rootScope) {
           form[0].reset();
         });
       });
-
-      $scope.loadMovies = function () {
-        // moviesService.getData();
-        $rootScope.loadMovies();
-      };
     }
   };
 };
