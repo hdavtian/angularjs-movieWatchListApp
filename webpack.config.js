@@ -56,6 +56,10 @@ module.exports = {
         $: 'jquery',
         jQuery: 'jquery',
         'window.jQuery': 'jquery'
+      }),
+      new webpack.optimize.UglifyJsPlugin({
+        test: /\.js$/,
+        exclude: /node-modules/
       })
   ],
   devServer: {

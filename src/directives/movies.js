@@ -2,7 +2,7 @@ export default function(){
   return {
     replace: true,
     restrict: 'E',
-    controller: function($scope, moviesService){
+    controller: [ '$scope', 'moviesService', function($scope, moviesService){
 
       // loadMovies is a reference to the moviesService loader
       $scope.loadMovies = function(){
@@ -26,10 +26,10 @@ export default function(){
       // load movies ...
       $scope.loadMovies();
 
-    },
+    }],
     template: `
       <div class="movie-list">
-        <movie 
+        <movie
           ng-repeat='movie in movies'
           movie-obj='movie'
           name='{{movie.name}}' />
