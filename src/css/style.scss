@@ -2,36 +2,8 @@ html, body {
   font-family: helvetica, arial, sans-serif;
 }
 
-.movie-list {
-
-  padding: 0;
-
-  .movie {
-
-    font-family: courier, monospace, sans-serif;
-    font-size: 1.2em;
-    list-style-type: none;
-    padding: 8px 0;
-    border-bottom: 1px dotted #ccc;
-
-    .close-btn {
-      cursor: pointer;
-    }
-
-    .movie-name {
-
-    }
-
-    &.crossed-out {
-      .movie-name {
-        text-decoration: line-through;
-        color: #ccc;
-      }
-    }
-
-  }
-
-}//movies-list
+@import '_movie-list';
+@import '_movie-adder';
 
 // Page positioning containers
 
@@ -61,36 +33,6 @@ html, body {
 
 }//main-container
 
-// Movie Adder Container
-.movie-adder-container {
-
-  .textbox-movie {
-
-    width: 100%;
-    border: none;
-    border-bottom:3px solid #FFCC00;
-    margin-bottom: 15px;
-    font-size: 3em;
-
-    padding-left: 5px;
-    padding: 10px;
-
-    &::placeholder {
-      color: #ccc;
-      font-style: italic;
-    }
-  }//textbox-movie
-
-  .btn-primary {
-    border-radius: 0;
-    border:3px solid #FFCC00;
-    background-color: #991100;
-    color: white;
-    font-size: 2em;
-  }
-
-}//movie-adder-container
-
 .divider {
   text-align: center;
   font-size: 5em;
@@ -100,3 +42,5 @@ html, body {
 .load-json {
   cursor: pointer;
 }
+
+// Movie Adder Container

@@ -13,8 +13,7 @@ export default function(){
           <span>Re-load movie list</span>
         </div>
 
-      </div>
-    `,
+      </div>`,
     link: function($scope, $element, $attrs){
 
       let form = $element.find('form');
@@ -35,7 +34,6 @@ export default function(){
           form[0].reset();
         });
       })
-
     }
   }
 }

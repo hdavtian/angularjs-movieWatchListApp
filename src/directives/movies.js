@@ -1,7 +1,7 @@
 export default function(){
   return {
-    replace: true,
     restrict: 'E',
+    replace: true,
     controller: [ '$scope', 'moviesService', function($scope, moviesService){
 
       // loadMovies is a reference to the moviesService loader

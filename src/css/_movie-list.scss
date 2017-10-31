@@ -1,0 +1,30 @@
+.movie-list {
+
+  padding: 0;
+
+  .movie {
+
+    font-family: courier, monospace, sans-serif;
+    font-size: 1.2em;
+    list-style-type: none;
+    padding: 8px 0;
+    border-bottom: 1px dotted #ccc;
+
+    .close-btn {
+      cursor: pointer;
+    }
+
+    .movie-name {
+
+    }
+
+    &.crossed-out {
+      .movie-name {
+        text-decoration: line-through;
+        color: #ccc;
+      }
+    }
+
+  }
+
+}//movies-list
